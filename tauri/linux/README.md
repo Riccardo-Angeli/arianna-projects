@@ -19,7 +19,7 @@ pnpm tauri dev
 
 # 5. Build for distribution
 pnpm tauri build
-# → .deb, .rpm, .AppImage in src-tauri/target/release/bundle/
+# → .deb, .rpm, .AppImage in src-tauri/target/releases/bundle/
 ```
 
 ## Requirements

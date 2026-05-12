@@ -10,7 +10,7 @@
  *
  * ── WHAT IT DOES ──────────────────────────────────────────────────────────
  *
- *   Walks the monorepo (examples/ + tauri/) and produces 36 release ZIPs.
+ *   Walks the monorepo (examples/ + tauri/) and produces 36 releases ZIPs.
  *
  *      12 templates  ×  3 IDE flavours  =  36 archives
  *
@@ -32,22 +32,22 @@
  *
  * ── OUTPUT ────────────────────────────────────────────────────────────────
  *
- *   release/dist/arianna-<name>{,-vscode,-webstorm,-rustrover}.zip
+ *   releases/latest/arianna-<name>{,-vscode,-webstorm,-rustrover}.zip
  *
  *   For browser starters:
- *     release/dist/arianna-counter.zip
- *     release/dist/arianna-counter-vscode.zip
- *     release/dist/arianna-counter-webstorm.zip
+ *     releases/latest/arianna-counter.zip
+ *     releases/latest/arianna-counter-vscode.zip
+ *     releases/latest/arianna-counter-webstorm.zip
  *     ... × 6 templates  =  18 files
  *
  *   For Tauri starters:
- *     release/dist/arianna-tauri-macos.zip
- *     release/dist/arianna-tauri-macos-vscode.zip
- *     release/dist/arianna-tauri-macos-rustrover.zip
+ *     releases/latest/arianna-tauri-macos.zip
+ *     releases/latest/arianna-tauri-macos-vscode.zip
+ *     releases/latest/arianna-tauri-macos-rustrover.zip
  *     ... × 6 templates  =  18 files
  *
  *   Total: 36 ZIPs. CI uploads them via:
- *      gh release create vX.Y.Z release/dist/*.zip --generate-notes
+ *      gh releases create vX.Y.Z releases/latest/*.zip --generate-notes
  *
  * ── HOW TO RUN ────────────────────────────────────────────────────────────
  *
@@ -62,7 +62,7 @@
  *                        ../arianna-web
  *                        the project root
  *   --out=<path>       override the output directory.
- *                      Default: release/dist
+ *                      Default: releases/latest
  *   --quiet            suppress per-file logs (only the summary).
  */
 
@@ -111,7 +111,7 @@ const flagVal   = (name) => {
 const flag      = (name) => args.includes(`--${name}`);
 
 const QUIET     = flag('quiet');
-const OUT       = resolve(ROOT, flagVal('out') || 'release/dist');
+const OUT       = resolve(ROOT, flagVal('out') || 'releases/latest');
 
 // Where to find the 3 runtime bundles (arianna.js + additionals + components).
 function findRuntime() {
@@ -326,7 +326,7 @@ function walk(dir, baseInZip, cb, skip = SKIP_DEFAULT) {
     // symlinks: skip (rare in starter templates and break in ZIPs anyway)
   }
 }
-const SKIP_DEFAULT = new Set(['node_modules', 'target', '.DS_Store', 'dist', 'release']);
+const SKIP_DEFAULT = new Set(['node_modules', 'target', '.DS_Store', 'latest', 'release']);
 
 // ── Build one ZIP ────────────────────────────────────────────────────────
 

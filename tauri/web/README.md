@@ -6,7 +6,7 @@ Also opens directly in VS Code with the recommended extensions.
 ```bash
 pnpm install
 pnpm dev       # http://localhost:1420
-pnpm build     # ./dist
+pnpm build     # ./latest
 ```
 
 **VS Code:** open folder → F5 → "AriannA Web (Vite)"

@@ -3,7 +3,7 @@
 ```bash
 pnpm install
 pnpm tauri dev           # dev with hot-reload
-pnpm tauri build         # .app + .dmg in src-tauri/target/release/bundle/
+pnpm tauri build         # .app + .dmg in src-tauri/target/releases/bundle/
 
 # Open in Xcode (requires cargo-xcode)
 cargo install cargo-xcode
