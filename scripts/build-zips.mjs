@@ -47,7 +47,7 @@
  *     ... × 6 templates  =  18 files
  *
  *   Total: 36 ZIPs. CI uploads them via:
- *      gh releases create vX.Y.Z releases/latest/*.zip --generate-notes
+ *      gh release create vX.Y.Z releases/latest/*.zip --generate-notes
  *
  * ── HOW TO RUN ────────────────────────────────────────────────────────────
  *
@@ -326,7 +326,7 @@ function walk(dir, baseInZip, cb, skip = SKIP_DEFAULT) {
     // symlinks: skip (rare in starter templates and break in ZIPs anyway)
   }
 }
-const SKIP_DEFAULT = new Set(['node_modules', 'target', '.DS_Store', 'latest', 'release']);
+const SKIP_DEFAULT = new Set(['node_modules', 'target', '.DS_Store', 'releases', 'dist']);
 
 // ── Build one ZIP ────────────────────────────────────────────────────────
 
@@ -434,9 +434,9 @@ async function main() {
   console.log(`\n────────────────────────────────────────────────────────`);
   console.log(`Done: ${made} ZIPs created, ${skipped} skipped, ${(totalBytes / 1024 / 1024).toFixed(1)} MB total.`);
   console.log(`Output folder: ${OUT}`);
-  console.log(`\nNext: commit + tag v1.5.0 + push, then`);
-  console.log(`  gh release create v1.5.0 ${relative(ROOT, OUT)}/*.zip --generate-notes \\`);
-  console.log(`    --title "AriannA Starters v1.5.0"`);
+  console.log(`\nNext: commit the new ZIPs from WebStorm's VCS panel and push.`);
+  console.log(`The 36 ZIPs will be live at`);
+  console.log(`  https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/<file>.zip`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
