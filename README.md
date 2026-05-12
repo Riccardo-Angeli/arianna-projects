@@ -48,37 +48,14 @@ arianna-<name>-rustrover.zip      ← + .idea/    (Tauri starters)
 
 36 ZIPs per release: 6 web × 3 flavours + 6 Tauri × 3 flavours.
 
-```bash
-unzip arianna-counter-vscode.zip
-cd arianna-counter
-npm install
-npm run dev
-```
-
-For a Tauri starter you'll also need a Rust toolchain (`rustup`) and the
-Tauri CLI prerequisites for your platform — see
-[tauri.app/v2/guides/getting-started/prerequisites](https://tauri.app).
+Unzip, open in your IDE, the preset auto-applies.
 
 ### Power user: clone the monorepo
 
-```bash
-git clone https://github.com/Riccardo-Angeli/arianna-projects.git
-cd arianna-projects
-cp -r examples/counter my-app
-cd my-app && npm install && npm run dev
+Clone, copy any starter folder, rename it, open it in your IDE.
+
 ```
-
-### Add presets to an existing project
-
-```bash
-# VSCode for any project kind
-npx degit Riccardo-Angeli/arianna-projects/.vscode-presets .vscode
-
-# WebStorm — best for web (browser-only) projects
-npx degit Riccardo-Angeli/arianna-projects/.webstorm-presets .idea
-
-# RustRover — best for Tauri (Rust + TS) projects
-npx degit Riccardo-Angeli/arianna-projects/.rustrover-presets .idea
+git clone https://github.com/Riccardo-Angeli/arianna-projects.git
 ```
 
 ## Repo layout
@@ -94,37 +71,55 @@ arianna-projects/
 ├── .vscode-presets/                   ← shared VSCode config
 ├── .webstorm-presets/                 ← shared WebStorm config (web)
 ├── .rustrover-presets/                ← shared RustRover config (Tauri)
-├── scripts/build-zips.js              ← produces all 36 release ZIPs
-├── scripts/install-presets.js         ← copies preset into existing project
+├── scripts/build-zips.mjs             ← produces all 36 release ZIPs
+├── scripts/install-presets.mjs        ← copies preset into existing project
 ├── .github/workflows/release.yml      ← auto-releases on tag push
+├── release/dist/                      ← build output (gitignored)
 ├── LICENSE
 └── package.json
 ```
 
-## Producing the release ZIPs (maintainer workflow)
+## Producing the release ZIPs (maintainer workflow — WebStorm)
 
-```bash
-# Step 1: build the 3 runtime bundles in the framework repo
-cd ../AriannA-Js && npm run build
+The build is one self-contained script — no `npm install`, no external
+dependencies, just Node 20+ built-ins.
 
-# Step 2: copy them next to the Cloudflare-Pages-served site files
-cp dist/arianna.js dist/arianna-additionals.js dist/arianna-components.js \
-   ../arianna-web-static/
+**1. Make sure the runtime bundles are in place.** The script reads them
+from `../arianna-web/arianna-web-static/`:
 
-# Step 3: generate the 36 starter ZIPs
-cd ../arianna-projects
-npm install
-npm run build-zips:local             # reads ../arianna-web-static for bundles
-
-# Step 4: tag + push + release
-git tag v1.5.0
-git push origin v1.5.0
-gh release create v1.5.0 dist/*.zip --generate-notes --title "AriannA Starters v1.5.0"
+```
+arianna-web/arianna-web-static/arianna.js
+arianna-web/arianna-web-static/arianna-additionals.js
+arianna-web/arianna-web-static/arianna-components.js
 ```
 
-The GitHub Action in `.github/workflows/release.yml` does Step 3 + 4
-automatically on every `v*` tag push (so locally you can skip steps 3 and 4
-and just `git tag && git push --tags`).
+If you've just rebuilt the framework, copy the 3 bundles from
+`AriannA-Js/dist/` into that folder first.
+
+**2. In WebStorm, right-click `scripts/build-zips.mjs` → Run.**
+
+Output:
+
+```
+release/dist/arianna-counter.zip
+release/dist/arianna-counter-vscode.zip
+release/dist/arianna-counter-webstorm.zip
+…  (36 files total)
+```
+
+**3. Commit, tag, push from WebStorm's VCS panel:**
+
+- VCS → Commit → "Release v1.5.0"
+- Git → New Tag → `v1.5.0`
+- Push (with the "Push Tags" option checked)
+
+The GitHub Action in `.github/workflows/release.yml` picks up the tag,
+runs the build on CI, and creates the release with all 36 ZIPs attached.
+
+If you'd rather do the release locally:
+
+- Build → right-click `release/dist/` → "Show in Files" (Finder)
+- Drag all 36 ZIPs into the GitHub web UI: Releases → "Draft a new release"
 
 ## License
 

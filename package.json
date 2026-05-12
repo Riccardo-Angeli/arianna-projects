@@ -5,14 +5,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build-zips": "node scripts/build-zips.js",
-    "build-zips:local": "node scripts/build-zips.js --runtime=../arianna-web-static",
-    "install-vscode": "node scripts/install-presets.js vscode",
-    "install-webstorm": "node scripts/install-presets.js webstorm",
-    "install-rustrover": "node scripts/install-presets.js rustrover"
-  },
-  "devDependencies": {
-    "archiver": "^7.0.1"
+    "build-zips": "node scripts/build-zips.mjs",
+    "install-vscode": "node scripts/install-presets.mjs vscode",
+    "install-webstorm": "node scripts/install-presets.mjs webstorm",
+    "install-rustrover": "node scripts/install-presets.mjs rustrover"
   },
   "repository": {
     "type": "git",
