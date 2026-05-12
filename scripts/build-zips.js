@@ -2,20 +2,19 @@
 /**
  * Build all 36 starter ZIPs.
  *
- * The monorepo holds 12 templates:
+ * The monorepo holds 12 templates in a two-folder layout:
  *
- *   Web / browser starters (6) — Vite-free, just HTML + the 3 AriannA
- *   bundles loaded via <script type="module">:
+ *   examples/             — Web / browser starters (6) — Vite-free, plain
+ *                           HTML + the 3 AriannA bundles loaded via
+ *                           <script type="module">:
+ *                             counter · desktop · minimal · payments ·
+ *                             physics · three-keyframes
  *
- *       minimal · counter · three-keyframes · physics · desktop · payments
+ *   tauri/                — Tauri starters (6) — Vite + src-tauri/ (Rust
+ *                           backend) for native binaries:
+ *                             android · ios · linux · macos · web · windows
  *
- *   Tauri starters (6) — Vite + src-tauri/ (Rust backend) for native
- *   binaries across desktop and mobile:
- *
- *       tauri-web · tauri-macos · tauri-windows · tauri-linux
- *       tauri-ios · tauri-android
- *
- * IDE flavours are matched to the project kind:
+ * IDE flavours by project kind:
  *
  *       web    → bare ZIP + VSCode (.vscode/) + WebStorm  (.idea/)
  *       Tauri  → bare ZIP + VSCode (.vscode/) + RustRover (.idea/)
@@ -25,7 +24,10 @@
  *
  * Node 18+. Requires `archiver`:
  *   npm install --no-save archiver
- *   node scripts/build-zips.js [--runtime=path/to/arianna-web/dist]
+ *   node scripts/build-zips.js [--runtime=path/to/arianna-web-static]
+ *
+ * If --runtime is omitted the script tries ../arianna-web-static first,
+ * then ../arianna-web, then the current directory.
  */
 
 import {
@@ -42,20 +44,40 @@ const DIST = join(ROOT, 'dist');
 
 const args       = process.argv.slice(2);
 const runtimeArg = args.find(a => a.startsWith('--runtime='));
-const RUNTIME    = runtimeArg
-  ? resolve(runtimeArg.split('=')[1])
-  : resolve(ROOT, '..', 'arianna-web');
+
+function findRuntime() {
+  if (runtimeArg) return resolve(runtimeArg.split('=')[1]);
+  const candidates = [
+    resolve(ROOT, '..', 'arianna-web-static'),
+    resolve(ROOT, '..', 'arianna-web'),
+    ROOT,
+  ];
+  for (const c of candidates) {
+    if (existsSync(join(c, 'arianna.js'))) return c;
+  }
+  return candidates[0];
+}
+const RUNTIME = findRuntime();
+
+const BUNDLES = ['arianna.js', 'arianna-additionals.js', 'arianna-components.js'];
 
 const WEB_TEMPLATES = [
-  'minimal', 'counter', 'three-keyframes', 'physics', 'desktop', 'payments',
+  { name: 'counter',          src: 'examples/counter'         },
+  { name: 'desktop',          src: 'examples/desktop'         },
+  { name: 'minimal',          src: 'examples/minimal'         },
+  { name: 'payments',         src: 'examples/payments'        },
+  { name: 'physics',          src: 'examples/physics'         },
+  { name: 'three-keyframes',  src: 'examples/three-keyframes' },
 ];
 
 const TAURI_TEMPLATES = [
-  'tauri-web', 'tauri-macos', 'tauri-windows', 'tauri-linux',
-  'tauri-ios', 'tauri-android',
+  { name: 'tauri-android',  src: 'tauri/android' },
+  { name: 'tauri-ios',      src: 'tauri/ios'     },
+  { name: 'tauri-linux',    src: 'tauri/linux'   },
+  { name: 'tauri-macos',    src: 'tauri/macos'   },
+  { name: 'tauri-web',      src: 'tauri/web'     },
+  { name: 'tauri-windows',  src: 'tauri/windows' },
 ];
-
-const BUNDLES = ['arianna.js', 'arianna-additionals.js', 'arianna-components.js'];
 
 function rimraf(p) { if (existsSync(p)) rmSync(p, { recursive: true, force: true }); }
 
@@ -92,13 +114,14 @@ const WORKSPACE_XML = `<?xml version="1.0" encoding="UTF-8"?>
 </project>
 `;
 
-async function buildOne(name, kind, variant) {
-  const staging = join(DIST, '_staging', `arianna-${name}${variant ? '-' + variant : ''}`);
+async function buildOne(tpl, kind, variant) {
+  const stagingName = `arianna-${tpl.name}${variant ? '-' + variant : ''}`;
+  const staging = join(DIST, '_staging', stagingName);
   rimraf(staging);
 
-  const src = join(ROOT, name);
+  const src = join(ROOT, tpl.src);
   if (!existsSync(src)) {
-    console.warn(`  ! ${name} not found, skipping`);
+    console.warn(`  ! ${tpl.src} not found, skipping`);
     return;
   }
   copyDir(src, staging);
@@ -123,7 +146,7 @@ async function buildOne(name, kind, variant) {
     writeFileSync(join(target, 'workspace.xml'), WORKSPACE_XML);
   }
 
-  const outFile = join(DIST, `arianna-${name}${variant ? '-' + variant : ''}.zip`);
+  const outFile = join(DIST, `${stagingName}.zip`);
   rimraf(outFile);
   const bytes = await zipFolder(staging, outFile);
   console.log(`  ✓ ${basename(outFile)}  (${(bytes / 1024).toFixed(0)} KB)`);
@@ -131,17 +154,25 @@ async function buildOne(name, kind, variant) {
 
 async function main() {
   console.log(`Building starter ZIPs into ${DIST}`);
-  console.log(`Runtime source: ${RUNTIME}\n`);
+  console.log(`Runtime source: ${RUNTIME}`);
+  if (!existsSync(join(RUNTIME, 'arianna.js'))) {
+    console.warn(`! arianna.js NOT FOUND in ${RUNTIME}`);
+    console.warn('  Web starter ZIPs will be missing the 3 runtime bundles.');
+    console.warn('  Pass --runtime=path/to/folder/with/bundles to fix this.\n');
+  } else {
+    console.log('');
+  }
+
   rimraf(DIST);
   mkdirSync(DIST, { recursive: true });
 
-  for (const name of WEB_TEMPLATES) {
-    console.log(`→ ${name} (web)`);
-    for (const v of ['', 'vscode', 'webstorm']) await buildOne(name, 'web', v);
+  for (const tpl of WEB_TEMPLATES) {
+    console.log(`→ ${tpl.name} (web, from ${tpl.src})`);
+    for (const v of ['', 'vscode', 'webstorm']) await buildOne(tpl, 'web', v);
   }
-  for (const name of TAURI_TEMPLATES) {
-    console.log(`\n→ ${name} (tauri)`);
-    for (const v of ['', 'vscode', 'rustrover']) await buildOne(name, 'tauri', v);
+  for (const tpl of TAURI_TEMPLATES) {
+    console.log(`\n→ ${tpl.name} (tauri, from ${tpl.src})`);
+    for (const v of ['', 'vscode', 'rustrover']) await buildOne(tpl, 'tauri', v);
   }
 
   rimraf(join(DIST, '_staging'));
@@ -149,6 +180,7 @@ async function main() {
   const zips = readdirSync(DIST).filter(f => f.endsWith('.zip'));
   const total = zips.reduce((sum, f) => sum + statSync(join(DIST, f)).size, 0);
   console.log(`\nDone. ${zips.length} ZIPs, ${(total / 1024 / 1024).toFixed(1)} MB total.`);
+  console.log(`\nNext: gh release create v1.5.0 dist/*.zip --generate-notes --title "AriannA Starters v1.5.0"`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

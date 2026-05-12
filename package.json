@@ -1,12 +1,12 @@
 {
-  "name": "arianna-js-projects",
+  "name": "arianna-projects",
   "version": "1.5.0",
   "description": "Twelve ready-to-run starter templates for the AriannA JS framework — six browser, six Tauri — with VSCode, WebStorm and RustRover presets.",
   "private": true,
   "type": "module",
   "scripts": {
     "build-zips": "node scripts/build-zips.js",
-    "build-zips:local": "node scripts/build-zips.js --runtime=../arianna-web",
+    "build-zips:local": "node scripts/build-zips.js --runtime=../arianna-web-static",
     "install-vscode": "node scripts/install-presets.js vscode",
     "install-webstorm": "node scripts/install-presets.js webstorm",
     "install-rustrover": "node scripts/install-presets.js rustrover"
@@ -16,10 +16,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Riccardo-Angeli/AriannA-Js-Projects.git"
+    "url": "git+https://github.com/Riccardo-Angeli/arianna-projects.git"
   },
   "author": "Riccardo Angeli",
   "license": "MIT",
-  "homepage": "https://arianna-js.dev",
-  "bugs": "https://github.com/Riccardo-Angeli/AriannA-Js-Projects/issues"
+  "homepage": "https://ariannajs.dev",
+  "bugs": "https://github.com/Riccardo-Angeli/arianna-projects/issues"
 }

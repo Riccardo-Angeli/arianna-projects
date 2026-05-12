@@ -4,36 +4,44 @@
  *
  * Usage from your project root:
  *
- *   npx degit Riccardo-Angeli/AriannA-Js-Projects/.vscode-presets    .vscode
- *   npx degit Riccardo-Angeli/AriannA-Js-Projects/.webstorm-presets  .idea
+ *   npx degit Riccardo-Angeli/arianna-projects/.vscode-presets    .vscode
+ *   npx degit Riccardo-Angeli/arianna-projects/.webstorm-presets  .idea
+ *   npx degit Riccardo-Angeli/arianna-projects/.rustrover-presets .idea
  *
  * Or, if you have a local clone of this repo:
  *
- *   node /path/to/AriannA-Js-Projects/scripts/install-presets.js vscode   ./my-project
- *   node /path/to/AriannA-Js-Projects/scripts/install-presets.js webstorm ./my-project
+ *   node /path/to/arianna-projects/scripts/install-presets.js vscode    ./my-project
+ *   node /path/to/arianna-projects/scripts/install-presets.js webstorm  ./my-project
+ *   node /path/to/arianna-projects/scripts/install-presets.js rustrover ./my-tauri-project
+ *
+ * webstorm preset → for plain JS/TS browser projects.
+ * rustrover preset → for Tauri projects (also wires Cargo + Tauri run configs).
  */
 
-import { copyFileSync, mkdirSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 
-const which = (process.argv[2] || '').toLowerCase();
+const which  = (process.argv[2] || '').toLowerCase();
 const target = process.argv[3] || '.';
 
-if (!['vscode', 'webstorm'].includes(which)) {
-  console.error('Usage: install-presets.js <vscode|webstorm> [target-dir]');
+const PRESETS = {
+  vscode:    { from: '.vscode-presets',    to: '.vscode' },
+  webstorm:  { from: '.webstorm-presets',  to: '.idea'   },
+  rustrover: { from: '.rustrover-presets', to: '.idea'   },
+};
+
+if (!PRESETS[which]) {
+  console.error('Usage: install-presets.js <vscode|webstorm|rustrover> [target-dir]');
   process.exit(1);
 }
 
-const sourceDir = which === 'vscode'
-  ? join(ROOT, '.vscode-presets')
-  : join(ROOT, '.webstorm-presets');
-const outDir = which === 'vscode'
-  ? join(resolve(target), '.vscode')
-  : join(resolve(target), '.idea');
+const preset    = PRESETS[which];
+const sourceDir = join(ROOT, preset.from);
+const outDir    = join(resolve(target), preset.to);
 
 function copyDir(src, dst) {
   mkdirSync(dst, { recursive: true });
