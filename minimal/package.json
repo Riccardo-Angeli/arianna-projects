@@ -1,0 +1,15 @@
+{
+  "name": "arianna-starter-minimal",
+  "version": "1.0.0",
+  "description": "Smallest possible AriannA program — one HTML, one TS, the runtime.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "live-server --port=5500 --no-browser",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "typescript": "^5.5.0"
+  }
+}

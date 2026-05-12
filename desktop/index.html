@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriannA — Desktop starter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 14px ui-sans-serif, system-ui, sans-serif;
+    background: #000;
+  }
+  #stage {
+    position: fixed; inset: 0;
+    background: linear-gradient(180deg, #0ea5e9 0%, #1e3a8a 100%);
+    overflow: hidden;
+  }
+  .os-switch {
+    position: absolute; top: 14px; right: 14px; z-index: 100;
+    display: flex; gap: 6px;
+    background: rgba(0, 0, 0, .35);
+    padding: 4px; border-radius: 6px;
+    backdrop-filter: blur(8px);
+  }
+  .os-switch button {
+    background: transparent;
+    border: 1px solid #333;
+    color: #d4d4d4;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font: 12px ui-sans-serif, sans-serif;
+  }
+  .os-switch button.active {
+    background: #e40c88; border-color: #e40c88; color: #fff;
+  }
+
+  /* ── Linux / GNOME chrome veneer (CSS-only, no rebuild needed) ─── */
+  .ar-window--linux {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5) !important;
+  }
+  .ar-window--linux .ar-window__chrome {
+    background: linear-gradient(180deg, #353535, #2e2e2e) !important;
+    height: 44px !important; position: relative !important;
+  }
+  .ar-window--linux .ar-window__lights { display: none !important; }
+  .ar-window--linux .ar-window__chrome::after {
+    content: '− □ ×';
+    position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: #eaeaea; letter-spacing: 10px;
+    font: 600 16px ui-sans-serif, sans-serif;
+  }
+  .ar-dock--linux {
+    background: rgba(40,40,40,.92) !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(20px) !important;
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="os-switch">
+    <button data-os="macos"   class="active">macOS</button>
+    <button data-os="windows">Windows</button>
+    <button data-os="linux">Linux</button>
+  </div>
+</div>
+
+<script type="module" src="./arianna.js"></script>
+<script type="module" src="./arianna-additionals.js"></script>
+<script type="module" src="./arianna-components.js"></script>
+<script type="module" src="src/app.ts"></script>
+
+</body>
+</html>

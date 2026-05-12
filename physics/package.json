@@ -1,0 +1,15 @@
+{
+  "name": "arianna-starter-physics",
+  "version": "1.0.0",
+  "description": "Bodies, ramps, springs, and a debug-draw canvas using the Physics additional.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "live-server --port=5500 --no-browser",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "typescript": "^5.5.0"
+  }
+}

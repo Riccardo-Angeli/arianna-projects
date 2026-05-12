@@ -1,0 +1,15 @@
+{
+  "name": "arianna-starter-desktop",
+  "version": "1.0.0",
+  "description": "macOS / Windows / Linux Desktop composition with draggable windows and a Dock.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "live-server --port=5500 --no-browser",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "typescript": "^5.5.0"
+  }
+}

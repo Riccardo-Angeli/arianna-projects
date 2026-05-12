@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriannA — Physics starter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 14px ui-sans-serif, system-ui, sans-serif;
+    background: #0f1115; color: #e8e8ec;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  header {
+    padding: 16px 24px; background: #1a1d24;
+    border-bottom: 1px solid #2a2d36;
+    display: flex; align-items: center; gap: 16px;
+  }
+  h1 { font-size: 16px; color: #e40c88; }
+  .controls { display: flex; gap: 8px; margin-left: auto; }
+  button {
+    background: #2a2d36; color: #e8e8ec; border: 1px solid #3a3d46;
+    padding: 6px 14px; border-radius: 4px; cursor: pointer; font: 12px ui-sans-serif, sans-serif;
+  }
+  button:hover { background: #3a3d46; }
+  button.primary { background: #e40c88; border-color: #e40c88; color: #fff; }
+  .canvas-wrap {
+    flex: 1; padding: 16px; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  canvas {
+    background: #0d0d0f;
+    border-radius: 8px;
+    border: 1px solid #2a2d36;
+    max-width: 100%; max-height: 100%;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AriannA Physics — falling boxes</h1>
+  <div class="controls">
+    <button id="add-box">Drop a box</button>
+    <button id="add-ball">Drop a ball</button>
+    <button class="primary" id="reset">Reset</button>
+  </div>
+</header>
+
+<div class="canvas-wrap">
+  <canvas id="stage" width="800" height="600"></canvas>
+</div>
+
+<script type="module" src="./arianna.js"></script>
+<script type="module" src="./arianna-additionals.js"></script>
+<script type="module" src="./arianna-components.js"></script>
+<script type="module" src="src/app.ts"></script>
+
+</body>
+</html>

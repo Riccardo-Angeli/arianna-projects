@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriannA — Minimal starter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 14px ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background: #0f1115; color: #e8e8ec;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #app {
+    background: #1a1d24;
+    padding: 48px 64px;
+    border-radius: 16px;
+    border: 1px solid #2a2d36;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    text-align: center;
+  }
+  h1 { font-size: 32px; color: #e40c88; margin-bottom: 8px; }
+  p  { color: #8a8f98; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<!-- AriannA runtime: load order matters — core → additionals → components -->
+<script type="module" src="./arianna.js"></script>
+<script type="module" src="./arianna-additionals.js"></script>
+<script type="module" src="./arianna-components.js"></script>
+<script type="module" src="src/app.ts"></script>
+
+</body>
+</html>

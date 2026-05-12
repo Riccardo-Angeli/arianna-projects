@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriannA — Counter starter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 14px ui-sans-serif, system-ui, sans-serif;
+    background: #0f1115; color: #e8e8ec;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #app {
+    background: #1a1d24;
+    padding: 40px 56px;
+    border-radius: 16px;
+    border: 1px solid #2a2d36;
+    display: flex; flex-direction: column; gap: 20px; align-items: center;
+  }
+  h1 { font-size: 14px; color: #8a8f98; text-transform: uppercase; letter-spacing: .08em; }
+  .count { font: 600 56px ui-monospace, monospace; color: #e40c88; min-width: 120px; text-align: center; }
+  .btns { display: flex; gap: 8px; }
+  button {
+    background: #2a2d36; color: #e8e8ec; border: 1px solid #3a3d46;
+    padding: 10px 20px; border-radius: 6px; cursor: pointer;
+    font: 600 14px ui-sans-serif, sans-serif;
+  }
+  button:hover { background: #3a3d46; }
+  button.primary { background: #e40c88; border-color: #e40c88; color: #fff; }
+  button.primary:hover { background: #c30b75; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="module" src="./arianna.js"></script>
+<script type="module" src="./arianna-additionals.js"></script>
+<script type="module" src="./arianna-components.js"></script>
+<script type="module" src="src/app.ts"></script>
+
+</body>
+</html>

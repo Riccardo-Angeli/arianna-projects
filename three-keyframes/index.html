@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriannA — Three + KeyframeEditor starter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font: 14px ui-sans-serif, system-ui, sans-serif;
+    background: #0f1115; color: #e8e8ec;
+  }
+  header {
+    padding: 16px 24px; background: #1a1d24;
+    border-bottom: 1px solid #2a2d36;
+  }
+  h1 { font-size: 16px; color: #e40c88; }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    height: calc(100vh - 60px);
+  }
+  #scene-stage, #editor-mount {
+    background: #1a1d24;
+    border-radius: 8px;
+    border: 1px solid #2a2d36;
+    overflow: hidden;
+    min-height: 0;
+  }
+  #scene-stage { display: flex; align-items: center; justify-content: center; }
+  canvas { display: block; max-width: 100%; max-height: 100%; }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AriannA — Three.js cube driven by KeyframeEditor</h1>
+</header>
+
+<div class="layout">
+  <div id="scene-stage"></div>
+  <div id="editor-mount"></div>
+</div>
+
+<!-- Three.js from CDN — the AriannA bundle does NOT ship Three -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module" src="./arianna.js"></script>
+<script type="module" src="./arianna-additionals.js"></script>
+<script type="module" src="./arianna-components.js"></script>
+<script type="module" src="src/app.ts"></script>
+
+</body>
+</html>
