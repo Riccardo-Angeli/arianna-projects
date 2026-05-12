@@ -1,16 +1,16 @@
-# AriannA JS Starters
+# AriannA JS Projects
 
 Twelve ready-to-run starter templates for the [AriannA JS framework](https://ariannajs.dev).
-Six **browser** starters (load the AriannA bundles via `<script type="module">`,
-no build step) and six **Tauri** starters (Vite + a Rust backend, target
+Six **browser** Projects (load the AriannA bundles via `<script type="module">`,
+no build step) and six **Tauri** Projects (Vite + a Rust backend, target
 macOS, Windows, Linux, iOS, Android, plus a browser-preview variant).
 
 Each template ships in three flavours: a bare ZIP, an IDE-paired ZIP for
-your editor of choice. Browser starters pair with **VSCode** and
-**WebStorm**; Tauri starters pair with **VSCode** and **RustRover** since
+your editor of choice. Browser Projects pair with **VSCode** and
+**WebStorm**; Tauri Projects pair with **VSCode** and **RustRover** since
 they also need a Rust toolchain.
 
-## Web / browser starters
+## Web / browser Projects
 
 | Template | What it shows | Tags |
 |---|---|---|
@@ -21,7 +21,7 @@ they also need a Rust toolchain.
 | **[desktop](./examples/desktop)**                | `Dock` + `Window` macOS / Windows / Linux composition | `layout` `window` |
 | **[payments](./examples/payments)**              | Multi-provider checkout: Stripe, PayPal, Apple Pay, Google Pay, Satispay, Nexi | `commerce` |
 
-## Tauri starters
+## Tauri Projects
 
 | Template | Target | Pairs with |
 |---|---|---|
@@ -34,19 +34,19 @@ they also need a Rust toolchain.
 
 ## How to use
 
-### Easiest: grab a ZIP from the releases page
+### Easiest: download a ZIP directly
 
-Visit the [releases page](https://github.com/Riccardo-Angeli/arianna-projects/releases/latest)
-and pick the right ZIP for your project + IDE:
+The 36 ready-made starter ZIPs live under [`releases/latest/`](./releases/latest)
+in this repo and are served via raw.githubusercontent.com. Direct download links:
 
 ```
-arianna-<name>.zip                ← bare project
-arianna-<name>-vscode.zip         ← + .vscode/  (VSCode preset)
-arianna-<name>-webstorm.zip       ← + .idea/    (web starters)
-arianna-<name>-rustrover.zip      ← + .idea/    (Tauri starters)
+https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/arianna-<name>.zip                ← bare project
+https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/arianna-<name>-vscode.zip         ← + .vscode/  (VSCode preset)
+https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/arianna-<name>-webstorm.zip       ← + .idea/    (web Projects)
+https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/arianna-<name>-rustrover.zip      ← + .idea/    (Tauri Projects)
 ```
 
-36 ZIPs per release: 6 web × 3 flavours + 6 Tauri × 3 flavours.
+36 ZIPs total: 6 web × 3 flavours + 6 Tauri × 3 flavours.
 
 Unzip, open in your IDE, the preset auto-applies.
 
@@ -56,27 +56,6 @@ Clone, copy any starter folder, rename it, open it in your IDE.
 
 ```
 git clone https://github.com/Riccardo-Angeli/arianna-projects.git
-```
-
-## Repo layout
-
-```
-arianna-projects/
-├── examples/                          ← 6 web starters
-│   ├── counter/  desktop/  minimal/
-│   ├── payments/ physics/ three-keyframes/
-├── tauri/                             ← 6 Tauri starters
-│   ├── android/  ios/  linux/
-│   ├── macos/    web/  windows/
-├── .vscode-presets/                   ← shared VSCode config
-├── .webstorm-presets/                 ← shared WebStorm config (web)
-├── .rustrover-presets/                ← shared RustRover config (Tauri)
-├── scripts/build-zips.mjs             ← produces all 36 release ZIPs
-├── scripts/install-presets.mjs        ← copies preset into existing project
-├── .github/workflows/release.yml      ← auto-releases on tag push
-├── release/dist/                      ← build output (gitignored)
-├── LICENSE
-└── package.json
 ```
 
 ## Producing the release ZIPs (maintainer workflow — WebStorm)
@@ -98,28 +77,44 @@ If you've just rebuilt the framework, copy the 3 bundles from
 
 **2. In WebStorm, right-click `scripts/build-zips.mjs` → Run.**
 
-Output:
+Output overwrites every file in `releases/latest/`:
 
 ```
-release/dist/arianna-counter.zip
-release/dist/arianna-counter-vscode.zip
-release/dist/arianna-counter-webstorm.zip
+releases/latest/arianna-counter.zip
+releases/latest/arianna-counter-vscode.zip
+releases/latest/arianna-counter-webstorm.zip
 …  (36 files total)
 ```
 
-**3. Commit, tag, push from WebStorm's VCS panel:**
+**3. Commit + push from WebStorm's VCS panel:**
 
-- VCS → Commit → "Release v1.5.0"
-- Git → New Tag → `v1.5.0`
-- Push (with the "Push Tags" option checked)
+- VCS → Commit → message "Refresh starter ZIPs v1.5.x"
+- Commit and Push
 
-The GitHub Action in `.github/workflows/release.yml` picks up the tag,
-runs the build on CI, and creates the release with all 36 ZIPs attached.
+Once the push lands on `main`, the new ZIPs are live at
+`https://raw.githubusercontent.com/Riccardo-Angeli/arianna-projects/main/releases/latest/`
+within seconds — the `index.html` of the site reads them from there.
 
-If you'd rather do the release locally:
+## Repo layout
 
-- Build → right-click `release/dist/` → "Show in Files" (Finder)
-- Drag all 36 ZIPs into the GitHub web UI: Releases → "Draft a new release"
+```
+arianna-projects/
+├── examples/                          ← 6 web Projects
+│   ├── counter/  desktop/  minimal/
+│   ├── payments/ physics/ three-keyframes/
+├── tauri/                             ← 6 Tauri Projects
+│   ├── android/  ios/  linux/
+│   ├── macos/    web/  windows/
+├── .vscode-presets/                   ← shared VSCode config
+├── .webstorm-presets/                 ← shared WebStorm config (web)
+├── .rustrover-presets/                ← shared RustRover config (Tauri)
+├── scripts/build-zips.mjs             ← produces all 36 release ZIPs
+├── scripts/install-presets.mjs        ← copies preset into existing project
+├── releases/latest/                   ← 36 committed ZIPs, served via raw
+│   └── arianna-*.zip
+├── LICENSE
+└── package.json
+```
 
 ## License
 
